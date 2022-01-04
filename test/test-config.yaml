@@ -1,0 +1,23 @@
+version: 1
+providers:
+  - name: slackworkspace
+    type: slack
+    config:
+      token: 
+events:
+  - name: britbus/traveline/import
+    provider: slackworkspace
+    template:
+      channel: 
+      attachment:
+        title: Traveline NOC Updates
+        fields:
+          - title: New Stops
+            value: "{{ .stops.inserts }}"
+          - title: Updated Stops
+            value: "{{ .stops.updates }}"
+          - title: New Stop Groups
+            value: "{{ .stop_groups.inserts }}"
+          - title: Updated Stop Groups
+            value: "{{ .stop_groups.updates }}"
+          

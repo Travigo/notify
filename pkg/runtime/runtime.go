@@ -5,6 +5,7 @@ import (
 
 	"github.com/britbus/notify/pkg/config"
 	"github.com/britbus/notify/pkg/slack"
+	"github.com/rs/zerolog/log"
 )
 
 func ProcessEvent(event *config.EventConfig, payload map[string]interface{}) error {
@@ -37,6 +38,8 @@ func ProcessEvent(event *config.EventConfig, payload map[string]interface{}) err
 	if err != nil {
 		return err
 	}
+
+	log.Info().Interface("message", providerTemplate).Msgf("Event %s triggered with provider %s", event.Name, event.Provider)
 
 	return nil
 }

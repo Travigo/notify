@@ -13,11 +13,10 @@ events:
         title: Traveline NOC Updates
         fields:
           - title: New Stops
-            value: "{{ .stops.inserts }}"
+            value: "{{ .Stops.Inserts }}"
           - title: Updated Stops
-            value: "{{ .stops.updates }}"
+            value: "{{ .Stops.Updates }}"
           - title: New Stop Groups
-            value: "{{ .stop_groups.inserts }}"
+            value: "{{ .Stop_Groups.Inserts }}"
           - title: Updated Stop Groups
-            value: "{{ .stop_groups.updates }}"
-          
+            value: "{{ .Stop_Groups.Updates }}"

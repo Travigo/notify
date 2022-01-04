@@ -4,31 +4,34 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"io"
 	"net/http"
-	"os"
 	"sync"
 	"time"
 
 	"github.com/rs/zerolog/log"
 )
 
+var Global *NotificationClient
+
 type NotificationClient struct {
 	Endpoint  string
 	WaitGroup *sync.WaitGroup
 }
 
-func (c *NotificationClient) Setup(endpoint string) {
-	c.Endpoint = endpoint
-	c.WaitGroup = &sync.WaitGroup{}
+func Setup(endpoint string) {
+	Global = &NotificationClient{
+		Endpoint:  endpoint,
+		WaitGroup: &sync.WaitGroup{},
+	}
+	log.Info().Msgf("Notification client setup pointing to %s", endpoint)
 }
 
-func (c *NotificationClient) SendEvent(eventName string, payload interface{}) {
-	if c.Endpoint == "" {
+func SendEvent(eventName string, payload interface{}) {
+	if Global == nil {
 		return
 	}
 
-	c.WaitGroup.Add(1)
+	Global.WaitGroup.Add(1)
 
 	go func() {
 		jsonValue, err := json.Marshal(payload)
@@ -36,20 +39,20 @@ func (c *NotificationClient) SendEvent(eventName string, payload interface{}) {
 		if err != nil {
 			log.Error().Err(err).Msg("Failed to marshall notification")
 
-			c.WaitGroup.Done()
+			Global.WaitGroup.Done()
 			return
 		}
 
 		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 		defer cancel()
 
-		request, err := http.NewRequestWithContext(ctx, "POST", c.Endpoint+"/event/"+eventName, bytes.NewBuffer(jsonValue))
+		request, err := http.NewRequestWithContext(ctx, "POST", Global.Endpoint+"/event/"+eventName, bytes.NewBuffer(jsonValue))
 		request.Header.Set("Content-Type", "application/json")
 
 		if err != nil {
 			log.Error().Err(err).Msg("Failed to create notification request")
 
-			c.WaitGroup.Done()
+			Global.WaitGroup.Done()
 			return
 		}
 
@@ -59,16 +62,19 @@ func (c *NotificationClient) SendEvent(eventName string, payload interface{}) {
 		if err != nil {
 			log.Error().Err(err).Msg("Failed to send notification")
 
-			c.WaitGroup.Done()
+			Global.WaitGroup.Done()
 			return
 		}
 		defer response.Body.Close()
 
-		io.Copy(os.Stdout, response.Body)
-		c.WaitGroup.Done()
+		Global.WaitGroup.Done()
 	}()
 }
 
-func (c *NotificationClient) Await() {
-	c.WaitGroup.Wait()
+func Await() {
+	if Global == nil {
+		return
+	}
+
+	Global.WaitGroup.Wait()
 }

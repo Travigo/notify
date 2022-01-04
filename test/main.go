@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/britbus/notify/pkg/notify_client"
-)
+import "github.com/britbus/notify/pkg/notify_client"
 
 type Updates struct {
 	Stops       UpdatesStatus
@@ -14,10 +12,9 @@ type UpdatesStatus struct {
 }
 
 func main() {
-	client := notify_client.NotificationClient{}
-	client.Setup("http://localhostfake:8081")
+	notify_client.Setup("http://localhost:8081")
 
-	client.SendEvent("britbus/traveline/import", Updates{
+	notify_client.SendEvent("britbus/traveline/import", Updates{
 		Stops: UpdatesStatus{
 			Inserts: "123",
 			Updates: "456",
@@ -28,5 +25,5 @@ func main() {
 		},
 	})
 
-	client.Await()
+	notify_client.Await()
 }

@@ -12,11 +12,11 @@ events:
       attachment:
         title: Traveline NOC Updates
         fields:
-          - title: New Stops
-            value: "{{ .Stops.Inserts }}"
-          - title: Updated Stops
-            value: "{{ .Stops.Updates }}"
-          - title: New Stop Groups
-            value: "{{ .Stop_Groups.Inserts }}"
-          - title: Updated Stop Groups
-            value: "{{ .Stop_Groups.Updates }}"
+          - title: New Operators
+            value: "{{ .Operators.Inserts }}"
+          - title: Updated Operators
+            value: "{{ .Operators.Updates }}"
+          - title: New Operator Groups
+            value: "{{ .Operator_Groups.Inserts }}"
+          - title: Updated Operator Groups
+            value: "{{ .Operator_Groups.Updates }}"

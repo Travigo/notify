@@ -4,6 +4,7 @@ import (
 	"github.com/britbus/notify/pkg/config"
 	"github.com/britbus/notify/pkg/runtime"
 	"github.com/gofiber/fiber/v2"
+	"github.com/rs/zerolog/log"
 )
 
 func SetupServer(listen string) {
@@ -28,6 +29,8 @@ func runEvent(c *fiber.Ctx) error {
 			err := runtime.ProcessEvent(event, payload)
 
 			if err != nil {
+				log.Error().Err(err).Msg("Failed to process event")
+
 				c.SendStatus(503)
 				return c.JSON(fiber.Map{
 					"error":   "Failed to process event",

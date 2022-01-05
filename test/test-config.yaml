@@ -3,20 +3,35 @@ providers:
   - name: slackworkspace
     type: slack
     config:
-      token: 
+      token: "{{ .env.NOTIFY_SLACKWORKSPACE_TOKEN }}"
 events:
   - name: britbus/traveline/import
     provider: slackworkspace
     template:
-      channel: 
+      channel: C02T53DLZ4G
       attachment:
         title: Traveline NOC Updates
         fields:
           - title: New Operators
-            value: "{{ .Operators.Inserts }}"
+            value: "{{ .data.Operators.Inserts }}"
           - title: Updated Operators
-            value: "{{ .Operators.Updates }}"
+            value: "{{ .data.Operators.Updates }}"
           - title: New Operator Groups
-            value: "{{ .Operator_Groups.Inserts }}"
+            value: "{{ .data.Operator_Groups.Inserts }}"
           - title: Updated Operator Groups
-            value: "{{ .Operator_Groups.Updates }}"
+            value: "{{ .data.Operator_Groups.Updates }}"
+  - name: britbus/naptan/import
+    provider: slackworkspace
+    template:
+      channel: C02T53DLZ4G
+      attachment:
+        title: NaPTAN Updates
+        fields:
+          - title: New Stops
+            value: "{{ .data.Stops.Inserts }}"
+          - title: Updated Stops
+            value: "{{ .data.Stops.Updates }}"
+          - title: New Stop Groups
+            value: "{{ .data.Stop_Groups.Inserts }}"
+          - title: Updated Stop Groups
+            value: "{{ .data.Stop_Groups.Updates }}"

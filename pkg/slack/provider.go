@@ -15,7 +15,7 @@ func (slackProvider *SlackProvider) Init(config *config.ProviderConfig) error {
 	return nil
 }
 
-func (slackProvider *SlackProvider) CreateProviderTemplate(eventConfig *config.EventConfig) (interface{}, error) {
+func (slackProvider *SlackProvider) CreateProviderEventTemplate(eventConfig *config.EventConfig) (interface{}, error) {
 	slackTemplate := SlackMessageTemplate{}
 	slackTemplate.LoadFromEventConfig(eventConfig)
 

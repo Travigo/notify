@@ -3,8 +3,8 @@ package main
 import "github.com/britbus/notify/pkg/notify_client"
 
 type Updates struct {
-	Stops       UpdatesStatus
-	Stop_Groups UpdatesStatus
+	Operators       UpdatesStatus
+	Operator_Groups UpdatesStatus
 }
 type UpdatesStatus struct {
 	Inserts string
@@ -15,11 +15,11 @@ func main() {
 	notify_client.Setup("http://localhost:8081")
 
 	notify_client.SendEvent("britbus/traveline/import", Updates{
-		Stops: UpdatesStatus{
+		Operators: UpdatesStatus{
 			Inserts: "123",
 			Updates: "456",
 		},
-		Stop_Groups: UpdatesStatus{
+		Operator_Groups: UpdatesStatus{
 			Inserts: "321",
 			Updates: "654",
 		},

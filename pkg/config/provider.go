@@ -8,6 +8,6 @@ type ProviderConfig struct {
 
 type Provider interface {
 	Init(*ProviderConfig) error
-	CreateProviderTemplate(*EventConfig) (interface{}, error)
+	CreateProviderEventTemplate(*EventConfig) (interface{}, error)
 	ProcessEvent(interface{}, *map[string]interface{}) error
 }

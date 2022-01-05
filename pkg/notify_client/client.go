@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/britbus/notify/pkg/util"
 	"github.com/rs/zerolog/log"
 )
 
@@ -18,7 +19,15 @@ type NotificationClient struct {
 	WaitGroup *sync.WaitGroup
 }
 
-func Setup(endpoint string) {
+func Setup() {
+	environmentVariables := util.GetEnvironmentVariables()
+
+	if environmentVariables["NOTIFY_CLIENT_URL"] != "" {
+		SetupWithURL(environmentVariables["NOTIFY_CLIENT_URL"])
+	}
+}
+
+func SetupWithURL(endpoint string) {
 	Global = &NotificationClient{
 		Endpoint:  endpoint,
 		WaitGroup: &sync.WaitGroup{},

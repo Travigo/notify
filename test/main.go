@@ -12,7 +12,8 @@ type UpdatesStatus struct {
 }
 
 func main() {
-	notify_client.Setup("http://localhost:8081")
+	// notify_client.Setup("http://localhost:8081")
+	notify_client.Setup()
 
 	notify_client.SendEvent("britbus/traveline/import", Updates{
 		Operators: UpdatesStatus{

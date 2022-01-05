@@ -2,11 +2,10 @@ package runtime
 
 import (
 	"errors"
-	"os"
-	"strings"
 
 	"github.com/britbus/notify/pkg/config"
 	"github.com/britbus/notify/pkg/slack"
+	"github.com/britbus/notify/pkg/util"
 	"github.com/rs/zerolog/log"
 )
 
@@ -32,13 +31,7 @@ func ProcessEvent(event *config.EventConfig, userData map[string]interface{}) er
 	}
 
 	// Convert the array of env variables into an addressable map
-	environmentVariables := map[string]string{}
-
-	for _, variable := range os.Environ() {
-		pair := strings.SplitN(variable, "=", 2)
-
-		environmentVariables[pair[0]] = pair[1]
-	}
+	environmentVariables := util.GetEnvironmentVariables()
 
 	// Template data contains both env variables and payload user data
 	data := map[string]interface{}{
